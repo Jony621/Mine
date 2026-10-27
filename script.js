@@ -64,6 +64,12 @@ const nextLabel = document.getElementById('next-label');
 const loveSong = document.getElementById('love-song');
 const musicButton = document.getElementById('music-button');
 const musicLabel = document.getElementById('music-label');
+const welcomeScreen = document.getElementById('welcome-screen');
+const envelopeScene = document.getElementById('envelope-scene');
+const envelopeButton = document.getElementById('envelope-button');
+const letterCard = document.getElementById('letter-card');
+const openHeartButton = document.getElementById('open-heart-button');
+const storySite = document.getElementById('story-site');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 let currentStep = -1;
@@ -173,6 +179,26 @@ nextButton.addEventListener('click', () => {
 
   currentStep = Math.min(currentStep + 1, story.length - 1);
   renderStep(true);
+});
+
+envelopeButton.addEventListener('click', () => {
+  if (envelopeScene.classList.contains('is-open')) return;
+  envelopeScene.classList.add('is-open');
+  envelopeButton.setAttribute('aria-expanded', 'true');
+  letterCard.inert = false;
+  letterCard.setAttribute('aria-hidden', 'false');
+  window.setTimeout(() => openHeartButton.focus(), reduceMotion.matches ? 0 : 720);
+});
+
+openHeartButton.addEventListener('click', () => {
+  welcomeScreen.classList.add('leaving');
+  const transitionDuration = reduceMotion.matches ? 0 : 420;
+  window.setTimeout(() => {
+    welcomeScreen.hidden = true;
+    storySite.hidden = false;
+    playEntryAnimation(storySite);
+    heartButton.focus();
+  }, transitionDuration);
 });
 
 renderStep();
